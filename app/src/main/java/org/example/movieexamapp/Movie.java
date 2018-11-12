@@ -1,17 +1,17 @@
 package org.example.movieexamapp;
 
 
-public class MovieList {
+public class Movie {
 
     String imagePath;
     String movieName;
     String description;
-    Double userRating;
+    String userRating;
     String releaseDate;
-    Double popularity;
+    String popularity;
 
-    public MovieList(String imagePath, String movieName, String description,
-                              Double userRating, String releaseDate, Double popularity) {
+    public Movie(String imagePath, String movieName, String description,
+                              String userRating, String releaseDate, String popularity) {
         this.imagePath = imagePath;
         this.movieName = movieName;
         this.description = description;
@@ -19,6 +19,7 @@ public class MovieList {
         this.releaseDate = releaseDate;
         this.popularity = popularity;
     }
+
 
     public String getImagePath() {
         return imagePath;
@@ -44,11 +45,11 @@ public class MovieList {
         this.description = description;
     }
 
-    public Double getUserRating() {
+    public String getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(Double userRating) {
+    public void setUserRating(String userRating) {
         this.userRating = userRating;
     }
 
@@ -60,11 +61,11 @@ public class MovieList {
         this.releaseDate = releaseDate;
     }
 
-    public Double getPopularity() {
+    public String getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(Double popularity) {
+    public void setPopularity(String popularity) {
         this.popularity = popularity;
     }
 
