@@ -21,14 +21,10 @@ import org.example.movieapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppDatabase database;
-    private Movie movie;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Set the content of the activity to use the  activity_main.xml layout file
         setContentView(R.layout.activity_main);

@@ -3,6 +3,7 @@ package org.example.movieapp.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,21 +27,23 @@ public class RandomMovieFragment extends Fragment {
 
     final String api_randomMovie = "https://api.themoviedb.org/3/movie/";
     final String api_restOfString = "?api_key=98ba0b1b619d28baf631a4f13b29f816&language=en-US";
-    int randomCount;
     final String imageBig = "https://image.tmdb.org/t/p/w500";
+    int randomCount;
+    Boolean finished = false;
+    Movie movie;
 
-   // Boolean firstTime = true;
     ImageView bannerImage;
     TextView movieTitle,movieAvgRate,movieReleaseDate,movieDescription, moviePopularity;
-    Movie movie;
     Button button;
-    Boolean finished = false;
+
+
     public RandomMovieFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //Fragment will not be destroyed on configuration changes.
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
     }
@@ -53,7 +56,6 @@ public class RandomMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.random_movie,container,false);
         bannerImage = v.findViewById(R.id.poster_image_detailed1);
@@ -64,8 +66,12 @@ public class RandomMovieFragment extends Fragment {
         moviePopularity = v.findViewById(R.id.popularity_detailed1);
         button = v.findViewById(R.id.randomButton);
         button.setOnClickListener(new View.OnClickListener() {
+            /*
+             Button which checks if internet is available if yes then call async task to get new random movie
+             */
             @Override
             public void onClick(View v) {
+
                 if (CheckNetwork.isInternetAvailable(getContext())) {
                     new getRandomMovie().execute();
                 }
@@ -77,6 +83,9 @@ public class RandomMovieFragment extends Fragment {
         new getRandomMovie().execute();
         return v;
     }
+    /*
+    Method to handle data after post execute
+     */
     public void loadData(){
         if (movie != null){
             movieTitle.setText("Title: " + movie.movieName);
@@ -99,6 +108,10 @@ public class RandomMovieFragment extends Fragment {
         }
     }
 
+     /*
+    Async task class which downloads data in background
+     */
+
     class getRandomMovie extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -111,7 +124,6 @@ public class RandomMovieFragment extends Fragment {
             HttpHandler sh = new HttpHandler();
             Random r = new Random();
             randomCount = (r.nextInt(500000 - 10) + 10);
-            if (CheckNetwork.isInternetAvailable(getContext())) {
                 // Making a request to url and getting response
                 String url = api_randomMovie + randomCount + api_restOfString;
                 String jsonStr = sh.makeServiceCall(url);
@@ -164,7 +176,7 @@ public class RandomMovieFragment extends Fragment {
                     });
 
                 }
-               }
+
 
             return null;
         }

@@ -61,6 +61,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //Fragment will not be destroyed on configuration changes.
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
     }
@@ -138,6 +139,10 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
         }
     }
 
+    /*
+    Prepares intent about chosen movie and start detailed movie activity
+     */
+
     public void goToDetailedPage(String imagePath, String userRating, String movieName,
                                         String description, String releaseDate, String popularity, String yourRating, String isFavourite) {
         Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
@@ -151,6 +156,9 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
         intent.putExtra("isFavourite", isFavourite);
         startActivity(intent);
     }
+    /*
+    Method which handles data after postExecute in async task - getMovies
+     */
 
     public void putDataToArrayList(){
         if (pageCount == 1) {
@@ -168,9 +176,6 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
             adapter.notifyDataSetChanged();
         }
     }
-    //    /*
-//    Prepares intent to DetailedMovieActivity and starts it.
-//     */
 
     @Override
     public void onResume() {
@@ -178,7 +183,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
     /*
-    getMovies is asyncTask which gets data from JSON
+    getMovies is asyncTask which downloads data in background
      */
 
      class getMovies extends AsyncTask<Void, Void, Void> {

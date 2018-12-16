@@ -46,7 +46,6 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
     // This determines the title for each tab
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         switch (position) {
             case 0:
                 return "Movies";

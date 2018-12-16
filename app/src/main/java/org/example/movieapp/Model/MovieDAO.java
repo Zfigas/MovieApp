@@ -15,12 +15,11 @@ import java.util.List;
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         void addMovie(Movie movie);
 
-
         @Query("select * from movie")
         List<Movie> getAllMovie();
 
-    @Query("select * from movie where movieName = :movieName")
-    List<Movie> getMovie(String movieName);
+        @Query("select * from movie where movieName = :movieName")
+        List<Movie> getMovie(String movieName);
 
         @Query("delete from movie where movieName = :movieName")
         void removeMovie(String movieName);
@@ -28,14 +27,11 @@ import java.util.List;
         @Query("UPDATE Movie SET yourRating = :your_rating WHERE movieName = :movieName")
         void updateMovie(String your_rating, String movieName);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovieFav(Movie movie);
-
         @Query("UPDATE Movie SET isFavourite = :isFavourite WHERE movieName = :movieName")
-       void updateIsFavouriteMovie(String isFavourite, String movieName);
+        void updateIsFavouriteMovie(String isFavourite, String movieName);
 
-    @Query("delete from movie")
-        void removeAllMovie();
+        @Query("delete from movie")
+         void removeAllMovie();
 
     }
 

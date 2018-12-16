@@ -35,16 +35,18 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class SearchFragment extends Fragment  implements AdapterView.OnItemClickListener  {
 
+    final String api_search = "https://api.themoviedb.org/3/search/movie?api_key=98ba0b1b619d28baf631a4f13b29f816&language=en-US&query=";
+    String url;
+    String forResult = "";
+    boolean loading_data;
+    int pageCount = 1;
+
+    MoviesAdapter adapter;
+    ArrayList<Movie> movieList;
+
     EditText editText;
     Button button;
     ListView listView;
-    ArrayList<Movie> movieList;
-    final String api_search = "https://api.themoviedb.org/3/search/movie?api_key=98ba0b1b619d28baf631a4f13b29f816&language=en-US&query=";
-    String forResult = "";
-    MoviesAdapter adapter;
-    boolean loading_data;
-    int pageCount;
-    String url;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -52,6 +54,7 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //Fragment will not be destroyed on configuration changes.
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
 
@@ -70,12 +73,15 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
         listView = v.findViewById(R.id.listView1);
         editText = v.findViewById(R.id.editText);
         loading_data = false;
-        pageCount = 1;
         button = v.findViewById(R.id.searchButton);
         listView.setOnItemClickListener(this);
         button.setOnClickListener(new View.OnClickListener() {
+            /*
+            Button onClick takes data from editText,checks internet connection, and makes Async search
+             */
             @Override
             public void onClick(View v) {
+
                 if (CheckNetwork.isInternetAvailable(getContext())) {
                     movieList.clear();
                     pageCount = 1;
@@ -85,8 +91,7 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
                 else{
                     Toast.makeText(getContext(),"No internet connection", Toast.LENGTH_LONG).show();
                 }
-
-
+                // Hides keyboard after clicking search button
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
@@ -94,12 +99,16 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
         return v;
     }
 
+    /*
+    On click go to detailed page about chosen movie
+     */
     public void onItemClick(AdapterView parent, View v, int position, long id){
         Movie movie = adapter.getItem(position);
         goToDetailedPage(movie.imagePath,movie.userRating,movie.movieName,movie.description,movie.releaseDate,movie.popularity, movie.yourRating, movie.isFavourite);
-
-
     }
+    /*
+    Method which takes data about movie and put it to intent, start detailedMovieActivity with this data
+     */
     public void goToDetailedPage(String imagePath, String userRating, String movieName,
                                  String description, String releaseDate, String popularity,String yourRating, String isFavourite) {
         Intent intent = new Intent(getActivity(), DetailMovieActivity.class);
@@ -113,7 +122,26 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
         intent.putExtra("isFavourite", isFavourite);
         startActivity(intent);
     }
+    /*
+    Method to take care of data after post execute
+     */
+    public void handlePostExecute(){
+        if(movieList.size()==0){
+            Toast.makeText(getActivity(),
+                    "Does not exist in TMDB API: ",
+                    Toast.LENGTH_LONG).show();
+        }
+        else{
+            adapter = new MoviesAdapter(getActivity().getApplicationContext(), movieList);
+            listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
 
+    }
+
+    /*
+    Async task class which downloads data in background
+     */
 
     public class searchForMovies extends AsyncTask<Void, Void, Void> {
         @Override
@@ -191,17 +219,9 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(movieList.size()==0){
-                Toast.makeText(getActivity(),
-                        "Does not exist in TMDB API: ",
-                        Toast.LENGTH_LONG).show();
-            }
-            else{
-            adapter = new MoviesAdapter(getActivity().getApplicationContext(), movieList);
-            listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            }
+            handlePostExecute();
         }
+
     }
 }
 

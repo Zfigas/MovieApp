@@ -41,6 +41,7 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //Fragment will not be destroyed on configuration changes.
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
     }
@@ -56,7 +57,6 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
         View v = inflater.inflate(R.layout.main_list,container,false);
         listView = v.findViewById(R.id.list);
         database = AppDatabase.getDatabase(getActivity().getApplicationContext());
-        //just for test purpose;
         List<Movie> movieList = database.movieDao().getAllMovie();
         movieArrayList = new ArrayList<>();
 
@@ -64,14 +64,19 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
         for (Movie temp : movieList) {
             movieArrayList.add(temp);
         }
+        //Copy of list
         movieArrayList2 = new ArrayList<>();
         movieArrayList2.addAll(movieArrayList);
 
+        //Set data to adapter
         adapter = new MoviesAdapter(getActivity(), movieArrayList);
         listView.setAdapter(adapter);
+        //Add on click listener
         listView.setOnItemClickListener(this);
+        //Refresh list view
         adapter.notifyDataSetChanged();
         spinner = v.findViewById(R.id.spinner1);
+        //make movieArrayList2 full of all movies which are favourite
         for (Movie x : movieArrayList2){
             if (x.isFavourite.equalsIgnoreCase("true")){
                 movieList.add(x);
@@ -79,6 +84,7 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
         }
 
 
+        //Setup spinner
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
                 getActivity(), R.array.spinner_array2, android.R.layout.simple_spinner_dropdown_item);
 
@@ -87,6 +93,7 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Based on spinner value get favourite list or rated list
                 List<Movie> movieList2 = database.movieDao().getAllMovie();
                 chosenFromSpinner = spinner.getSelectedItem().toString();
                 ArrayList<Movie> movieList = new ArrayList<>();
@@ -111,18 +118,26 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing
             }
         });
 
         return v;
 
     }
+    /*
+    On click go to detailed page about chosen movie
+     */
     public void onItemClick(AdapterView parent, View v, int position, long id) {
+
         Movie movie = adapter.getItem(position);
         if (movie != null) {
             goToDetailedPage(movie.imagePath, movie.userRating, movie.movieName, movie.description, movie.releaseDate, movie.popularity, movie.yourRating, movie.isFavourite);
         }
     }
+    /*
+    Method which takes data about movie and put it to intent, start detailedMovieActivity with this data
+     */
         public void goToDetailedPage(String imagePath, String userRating, String movieName,
                 String description, String releaseDate, String popularity, String yourRating, String isFavourite) {
 
@@ -139,6 +154,9 @@ public class YourMoviesFragment extends Fragment implements AdapterView.OnItemCl
         }
 
 
+        /*
+        On resume returns good list from spinner
+         */
     @Override
     public void onResume() {
         super.onResume();

@@ -10,7 +10,9 @@ public class CheckNetwork {
 
     private static final String TAG = CheckNetwork.class.getSimpleName();
 
-
+    /*
+    Method which checks if internet is available
+     */
 
     public static boolean isInternetAvailable(Context context)
     {

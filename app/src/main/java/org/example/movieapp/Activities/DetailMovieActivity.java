@@ -38,26 +38,29 @@ import java.util.List;
 
 public class DetailMovieActivity extends AppCompatActivity
 {
-    private AppDatabase database;
+
     final String imageBig = "https://image.tmdb.org/t/p/w500";
-    ImageView bannerImage;
     boolean isInDb;
     Movie movie;
+
+    private AppDatabase database;
+
+    ImageView bannerImage;
     Button button;
     List<Movie> movieList;
     TextView movieTitle,movieAvgRate,movieReleaseDate,movieDescription, moviePopularity, your_rating;
 
-    /*
-    Get data from intent(menu activity on click on certain movie get details), set it to correct places and display
-     */
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_movie);
         Toolbar toolbar =findViewById(R.id.toolbar);
+        //remove title of menu
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
+        //to add back button from detail activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -94,6 +97,10 @@ public class DetailMovieActivity extends AppCompatActivity
         database = AppDatabase.getDatabase(getApplicationContext());
         movieList = database.movieDao().getAllMovie();
 
+
+        /*
+        checks movielist, if movie is in database set movie rating and movie isfavourite values to data from intent
+         */
         if (movieList!=null) {
             for (Movie temp : movieList) {
                 if (temp.movieName.equals(movie.movieName)) {
@@ -104,6 +111,7 @@ public class DetailMovieActivity extends AppCompatActivity
 
             }
         }
+        // if rating = -1 do not display it
         if (movie.yourRating.equals("-1")){
             your_rating.setVisibility(View.INVISIBLE);
 
@@ -112,6 +120,7 @@ public class DetailMovieActivity extends AppCompatActivity
             your_rating.setText("Your rating: " + movie.yourRating);
         }
 
+        // button to add alert dialog with rating possibility
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,10 +132,7 @@ public class DetailMovieActivity extends AppCompatActivity
                 final Spinner spinner = mView.findViewById(R.id.dialogSpinner);
                 adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter2);
-
-
                 alertDialog.setTitle("Rating");
-
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Rate movie", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
@@ -145,13 +151,10 @@ public class DetailMovieActivity extends AppCompatActivity
                     }
                 });
                 if (!movie.yourRating.equals("-1")){
-
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Remove rating", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
-                        if (movie.yourRating.equals("-1")) {
-                            Toast.makeText(getApplicationContext(), movie.movieName + " was not rated, but I removed it for you", Toast.LENGTH_SHORT).show();
-                        }
+                        movie.yourRating = "-1";
                         database.movieDao().updateMovie(movie.yourRating, movie.movieName);
                         your_rating.setVisibility(View.INVISIBLE);
                         your_rating.setText("Your rating: " + movie.yourRating);
@@ -163,7 +166,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Cancel", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
-
                         dialog.cancel();
                     }});
 
@@ -186,6 +188,9 @@ public class DetailMovieActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+    /*
+    Override to change heart shaped icon to full red heart if movie is in favourites
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         database = AppDatabase.getDatabase(getApplicationContext());
@@ -206,6 +211,10 @@ public class DetailMovieActivity extends AppCompatActivity
 
         return super.onPrepareOptionsMenu(menu);
     }
+
+    /*
+    Override to add to favourites or to remove from favourites
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

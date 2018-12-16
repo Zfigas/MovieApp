@@ -16,14 +16,15 @@
         android:theme="@style/MyMaterialTheme" >
         <activity
             android:name="org.example.movieapp.Activities.MainActivity"
-            >
+            android:configChanges="orientation|screenSize"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.example.movieapp.Activities.DetailMovieActivity">
+            android:name="org.example.movieapp.Activities.DetailMovieActivity"
+            android:configChanges="orientation|screenSize">
         </activity>
 
     </application>

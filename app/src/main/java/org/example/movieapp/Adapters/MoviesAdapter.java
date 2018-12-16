@@ -35,7 +35,6 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.movie_list, parent, false);
         }
-        // Lookup view for data population
 
         bannerImage = view.findViewById(R.id.poster_image);
         movieTitle =  view.findViewById(R.id.title);
@@ -44,6 +43,9 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         movieTitle.setText("Title: " + movie.movieName);
         movieAvgRate.setText("Rating: " + movie.userRating);
 
+        /*
+        Picasso handles pictures
+         */
         if(movie.imagePath.equals("N/A")) {
             Picasso.get().load(R.drawable.image_not_found).resize(300, 300).into(bannerImage);
         }
