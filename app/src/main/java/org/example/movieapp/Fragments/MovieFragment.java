@@ -80,6 +80,11 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
 
         spinner.setAdapter(adapter2);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            /*
+            Start new async task to get relevant data based on item taken from spinner
+             */
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -89,7 +94,6 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
                 new getMovies().execute();
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -103,6 +107,11 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 //do nothing
             }
+            /*
+            On scroll checks if you see last item in list view, if there is internet connection,
+            if yes then start new asyncTask based on value of page, and spinner,
+            if no then make sure list view cant see last item
+             */
 
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
@@ -156,6 +165,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
         intent.putExtra("isFavourite", isFavourite);
         startActivity(intent);
     }
+
     /*
     Method which handles data after postExecute in async task - getMovies
      */
