@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_array">
+        <item>Discover</item>
+        <item>Trending</item>
+        <item>Highest rated</item>
+        <item>Most Voted</item>
+        <item>Upcoming</item>
+        <item>In cinemas</item>
+        <item>Oldest</item>
+
+    </string-array>
+
+    <string-array name="rate_array">
+        <item>10</item>
+        <item>9</item>
+        <item>8</item>
+        <item>7</item>
+        <item>6</item>
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+
+    </string-array>
+
+    <string-array name="spinner_array2">
+        <item>Favourites</item>
+        <item>Rated</item>
+    </string-array>
+</resources>

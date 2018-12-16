@@ -1,20 +1,46 @@
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <ScrollView android:id="@+id/ScrollViewID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        >
+    </android.support.v7.widget.Toolbar>
+
+        <ScrollView android:id="@+id/ScrollViewID"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_height="match_parent">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black"/>
     <ImageView
         android:id="@+id/poster_image_detailed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
 
+            <TextView
+                android:id="@+id/your_rating"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#f00"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic" />
 
     <TextView
         android:id="@+id/title_detailed"
@@ -22,7 +48,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="#5d5d5d"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textStyle="bold" />
 
     <TextView
@@ -60,6 +86,25 @@
             android:textColor="#5d5d5d"
             android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/empty_space1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:textColor="#5d5d5d"
+                android:textStyle="bold" />
+
 </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <Button
+        android:id="@+id/rateMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="Rate this movie"
+        style="@style/CKButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+</RelativeLayout>

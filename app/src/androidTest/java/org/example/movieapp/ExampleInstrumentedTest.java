@@ -1,4 +1,4 @@
-package org.example.movieexamapp;
+package org.example.movieapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

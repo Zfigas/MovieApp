@@ -1,0 +1,15 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="schemas.android.com/tools"
+    tools:context=".DetailMovieActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_addToFavourite"
+        android:title="Save as favourite"
+        android:icon="@drawable/empty_heart"
+        app:showAsAction="always"
+     />
+
+
+</menu>
