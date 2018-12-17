@@ -10,20 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 import org.example.movieapp.Activities.DetailMovieActivity;
 import org.example.movieapp.Adapters.MoviesAdapter;
 import org.example.movieapp.Database.AppDatabase;
 import org.example.movieapp.Model.Movie;
-import org.example.movieapp.Model.MovieDAO;
 import org.example.movieapp.R;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 public class YourMoviesFragment extends Fragment implements AdapterView.OnItemClickListener {
 

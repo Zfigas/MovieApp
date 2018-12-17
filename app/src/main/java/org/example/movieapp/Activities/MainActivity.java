@@ -1,21 +1,15 @@
 package org.example.movieapp.Activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
-
 import org.example.movieapp.Adapters.SimpleFragmentPagerAdapter;
 import org.example.movieapp.CheckInternet.CheckNetwork;
-import org.example.movieapp.Database.AppDatabase;
-import org.example.movieapp.Model.Movie;
 import org.example.movieapp.R;
 
 

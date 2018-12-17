@@ -1,15 +1,6 @@
 package org.example.movieapp.HttpHandlers;
 
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.example.movieapp.Activities.MainActivity;
-import org.example.movieapp.CheckInternet.CheckNetwork;
-import org.example.movieapp.Fragments.RandomMovieFragment;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;

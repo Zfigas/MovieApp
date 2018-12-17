@@ -3,7 +3,6 @@ package org.example.movieapp.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
-
 import org.example.movieapp.CheckInternet.CheckNetwork;
 import org.example.movieapp.HttpHandlers.HttpHandler;
 import org.example.movieapp.Model.Movie;
@@ -168,12 +165,14 @@ public class RandomMovieFragment extends Fragment {
                     }
 
                 } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new getRandomMovie().execute();
-                        }
-                    });
+                    if (CheckNetwork.isInternetAvailable(getContext())) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new getRandomMovie().execute();
+                            }
+                        });
+                    }
 
                 }
 

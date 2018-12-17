@@ -1,13 +1,10 @@
 package org.example.movieapp.Fragments;
 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.example.movieapp.Activities.DetailMovieActivity;
@@ -31,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MovieFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -91,7 +86,9 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
                 chosenFromSpinner = spinner.getSelectedItem().toString();
                 pageCount = 1;
                 movieList.clear();
-                new getMovies().execute();
+                if(CheckNetwork.isInternetAvailable(getContext())) {
+                    new getMovies().execute();
+                }
 
             }
             @Override
@@ -171,21 +168,31 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
      */
 
     public void putDataToArrayList(){
-        if (pageCount == 1) {
-            if(movieList.size()==0 && CheckNetwork.isInternetAvailable(getContext())){
-                pageCount = 1;
-                new getMovies().execute();
+
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (pageCount == 1) {
+                            if (movieList.size() == 0 && CheckNetwork.isInternetAvailable(getContext())) {
+                                pageCount = 1;
+                                new getMovies().execute();
+                            } else {
+                                adapter = new MoviesAdapter(getContext(), movieList);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            loading_data = false;
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
             }
-            else {
-                adapter = new MoviesAdapter(getContext(), movieList);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-        } else {
-            loading_data=false;
-            adapter.notifyDataSetChanged();
         }
-    }
+
+
+
 
     @Override
     public void onResume() {
@@ -230,7 +237,6 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
             }
             if (CheckNetwork.isInternetAvailable(getContext())) {
                 String jsonStr = sh.makeServiceCall(url);
-
 
             if (jsonStr != null) {
                 try {
@@ -291,16 +297,11 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            try {
-                Thread.sleep(300);
                 putDataToArrayList();
             }
-            catch(InterruptedException e){
 
-            }
 
         }
     }
 
-}
+

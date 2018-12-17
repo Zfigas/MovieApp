@@ -5,7 +5,6 @@ import android.content.Context;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-
 import org.example.movieapp.Model.Movie;
 import org.example.movieapp.Model.MovieDAO;
 

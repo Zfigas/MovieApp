@@ -4,21 +4,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.example.movieapp.Activities.MainActivity;
 import org.example.movieapp.Adapters.MoviesAdapter;
 import org.example.movieapp.Activities.DetailMovieActivity;
 import org.example.movieapp.CheckInternet.CheckNetwork;
@@ -93,7 +87,9 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
                 }
                 // Hides keyboard after clicking search button
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                if (getActivity().getCurrentFocus().getWindowToken() !=null) {
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                }
             }
         });
         return v;
@@ -125,18 +121,23 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
     /*
     Method to take care of data after post execute
      */
-    public void handlePostExecute(){
-        if(movieList.size()==0){
-            Toast.makeText(getActivity(),
-                    "Does not exist in TMDB API: ",
-                    Toast.LENGTH_LONG).show();
-        }
-        else{
-            adapter = new MoviesAdapter(getActivity().getApplicationContext(), movieList);
-            listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        }
-
+    public void handlePostExecute() {
+        if (getActivity() != null){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (movieList.size() == 0) {
+                        Toast.makeText(getActivity(),
+                                "Does not exist in TMDB API: ",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        adapter = new MoviesAdapter(getActivity().getApplicationContext(), movieList);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+    }
     }
 
     /*
