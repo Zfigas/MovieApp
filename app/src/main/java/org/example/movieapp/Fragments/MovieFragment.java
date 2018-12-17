@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import org.example.movieapp.Activities.DetailMovieActivity;
 import org.example.movieapp.Adapters.MoviesAdapter;
 import org.example.movieapp.CheckInternet.CheckNetwork;
@@ -25,7 +24,6 @@ import org.example.movieapp.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 
@@ -84,6 +82,9 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
                 chosenFromSpinner = spinner.getSelectedItem().toString();
                 pageCount = 1;
                 movieList.clear();
+                if(adapter!=null) {
+                    adapter.notifyDataSetChanged();
+                }
                 if(CheckNetwork.isInternetAvailable(getContext())) {
                     new getMovies().execute();
                 }
@@ -113,21 +114,19 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
 
                 if(firstVisibleItem+visibleItemCount == totalItemCount && totalItemCount!=0)
                 {
-                    if(getContext() !=null){
-                    if (CheckNetwork.isInternetAvailable(getContext())) {
-                        if (!loading_data) {
-                            loading_data = true;
-                            pageCount++;
-                            new getMovies().execute();
-                            adapter.notifyDataSetChanged();
+                    if(getContext() !=null) {
+                        if (CheckNetwork.isInternetAvailable(getContext())) {
+                            if (!loading_data) {
+                                loading_data = true;
+                                pageCount++;
+                                new getMovies().execute();
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_LONG).show();
+                            listView.smoothScrollToPosition(0);
                         }
                     }
-                        }
-                    else{
-                        Toast.makeText(getContext(),"No internet connection", Toast.LENGTH_LONG).show();
-                        listView.smoothScrollToPosition(0);
-                    }
-
                 }
             }
         });
