@@ -166,12 +166,14 @@ public class RandomMovieFragment extends Fragment {
 
                 } else {
                     if (CheckNetwork.isInternetAvailable(getContext())) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                new getRandomMovie().execute();
-                            }
-                        });
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new getRandomMovie().execute();
+                                }
+                            });
+                        }
                     }
 
                 }

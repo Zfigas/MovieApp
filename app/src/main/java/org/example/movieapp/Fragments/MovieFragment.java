@@ -48,8 +48,6 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
     final String api_nowPlaying = "https://api.themoviedb.org/3/movie/now_playing?api_key=98ba0b1b619d28baf631a4f13b29f816&language=en-US&page=";
 
 
-
-
     public MovieFragment() {
         // Required empty public constructor
     }
@@ -115,6 +113,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
 
                 if(firstVisibleItem+visibleItemCount == totalItemCount && totalItemCount!=0)
                 {
+                    if(getContext() !=null){
                     if (CheckNetwork.isInternetAvailable(getContext())) {
                         if (!loading_data) {
                             loading_data = true;
@@ -122,7 +121,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
                             new getMovies().execute();
                             adapter.notifyDataSetChanged();
                         }
-
+                    }
                         }
                     else{
                         Toast.makeText(getContext(),"No internet connection", Toast.LENGTH_LONG).show();

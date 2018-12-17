@@ -159,9 +159,7 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
 
             url = api_search+forResult+"&page=" + pageCount + "include_adult=false";
 
-
             String jsonStr = sh.makeServiceCall(url);
-
 
             if (jsonStr != null) {
                 try {
@@ -170,7 +168,6 @@ public class SearchFragment extends Fragment  implements AdapterView.OnItemClick
 
                     // Getting JSON Array node
                     JSONArray results = jsonObj.getJSONArray("results");
-
 
                     // looping through all results
                     movieList = new ArrayList<>();
