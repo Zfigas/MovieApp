@@ -168,7 +168,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
 
     public void putDataToArrayList(){
 
-            if (getActivity() != null) {
+            if (getActivity() != null && getContext() !=null ) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
